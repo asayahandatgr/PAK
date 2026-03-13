@@ -1,0 +1,161 @@
+{
+  "name": "Tugas 2 PAK",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Anda adalah asisten FAQ spesialis pemasaran. Jawab hanya berdasarkan Google Sheets. Jika tidak ada data, Sarankan hubungi tim support.\n\nGunakan kolom \"pertanyaan\" untuk mencocokkan pertanyaan pengguna.\nAmbil jawaban dari kolom \"jawaban\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "57abfc3d-d4e3-46a2-8677-9af4228b62a7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "b621a21a-e809-4073-b3fb-038cc775eceb",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "IIoXjri9SUmbwIt0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "ac6926db-651f-48ce-860c-758458be422c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1lJYeJWRihRYI3BA86PxtU50iSmq4Pr3CnAzpMoLyN_E",
+          "mode": "list",
+          "cachedResultName": "04-06 Pertanyaan untuk studi kasus chatbot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lJYeJWRihRYI3BA86PxtU50iSmq4Pr3CnAzpMoLyN_E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1867088136,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lJYeJWRihRYI3BA86PxtU50iSmq4Pr3CnAzpMoLyN_E/edit#gid=1867088136"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        208
+      ],
+      "id": "22799b64-07f7-4db4-86e3-ad80e4ed457e",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6SpYOVn666dMTSnL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Tegar. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "a022a506-7a1b-4a38-9165-74d6f48d3f09",
+      "name": "When chat message received",
+      "webhookId": "759a4aad-8e07-4d2c-99a2-5a89b2b565da"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3ba8b23e-08e5-417a-9a6c-728c82dbc7db",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5825b4845ea486a3f7cbb8bd10ef9879c0f58e72ae0a77921b810769ade793f9"
+  },
+  "id": "y0kWsELg401fWLwk",
+  "tags": []
+}
